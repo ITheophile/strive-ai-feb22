@@ -19,6 +19,7 @@ show_data = st.sidebar.checkbox('Glimpse on data?: ')
 
 # Movies recommendations
 recommendation = st.sidebar.checkbox('See movie recommendation')
+
 # Plot selector
 plot_selected = st.sidebar.selectbox('Select a visualization: ', 
 ('None', 'rating per year of release', 'Number of movies per actor', 'Number of movies per director'))
@@ -42,6 +43,7 @@ if show_data == True:
     st.write(data.head(10))
 
 
+# Rating/Year of release
 if plot_selected == 'rating per year of release':
     # choose variable for color
     
@@ -53,9 +55,8 @@ if plot_selected == 'rating per year of release':
 
     st.plotly_chart(fig)
 
-
+# Number of movies per actor
 elif plot_selected == 'Number of movies per actor':
-    # choose variable for color
     
     movie_actors_dict = {}
     for movie, actors in zip(data['movie_name'], data['actors']):
@@ -64,7 +65,7 @@ elif plot_selected == 'Number of movies per actor':
     movie_actors = pd.DataFrame(movie_actors_dict).melt(var_name= 'movie', value_name='actors')
 
 
-    # control number of bar
+    # control number of bars
     k = st.sidebar.selectbox('Minimum number of movies played', [2, 3])
 
     # actors that played at least k number of movies
