@@ -22,7 +22,7 @@ recommendation = st.sidebar.checkbox('See movie recommendation')
 
 # Plot selector
 plot_selected = st.sidebar.selectbox('Select a visualization: ', 
-('None', 'rating per year of release', 'Number of movies per actor', 'Number of movies per director'))
+('rating per year of release', 'Number of movies per actor', 'Number of movies per director'))
 
 
 
@@ -41,6 +41,13 @@ data[['start_filming_date', 'end_filming_date']] = data[[ 'start_filming_date', 
 # Show first 10 observations
 if show_data == True:
     st.write(data.head(10))
+
+
+# show recommendation
+if recommendation == 'See movie recommendation':
+# Movies to recomend, based on rating (at least 8) and the number of votes (at least 800 000).
+    movies_to_recommend = data[(data['rating'] >= 8) & (data['votes'] >= 800000)].sort_values('rating', ascending=False)
+    movies_to_recommend
 
 
 # Rating/Year of release
@@ -85,3 +92,21 @@ elif plot_selected == 'Number of movies per actor':
 
 
 
+elif plot_selected == 'Number of movies per director':
+    
+    
+    nb_movies_per_director = data['director'][data['director'].str.split(',').apply(len) == 1].value_counts()
+
+    # directed (alone) at least k number of movies
+    k = 2
+    serie_mv_director = nb_movies_per_director [nb_movies_per_director >= k]
+    director_movie = pd.DataFrame({'director': serie_mv_director.index, 'number_movies':serie_mv_director.values})
+
+
+    fig = px.bar(director_movie, x="director", y="number_movies",
+    template='seaborn',
+    title=f'Director (alone) of at least {k} movies', 
+    labels={"director": "Director's name",
+            "number_movies": "Number of movies"})
+
+    st.plotly_chart(fig)
