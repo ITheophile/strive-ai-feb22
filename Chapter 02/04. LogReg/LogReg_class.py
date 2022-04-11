@@ -37,7 +37,7 @@ class LogReg():
             weights = weights + learning_rate*gradient
             
             # for plotting in learning curve
-            self.sum_errors.append(error.sum() )
+            self.sum_errors.append(np.abs(error).sum() )
             
             self.weights = weights
             
@@ -57,7 +57,8 @@ class LogReg():
         
     def learning_curve(self):
         plt.figure(figsize=(12, 8))
-        plt.plot(self.itirations(), self.sum_errors)
+        plt.plot(self.itirations, self.sum_errors)
+        
         
         
          
