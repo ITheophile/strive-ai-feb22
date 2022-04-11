@@ -58,6 +58,9 @@ class LogReg():
     def learning_curve(self):
         plt.figure(figsize=(12, 8))
         plt.plot(self.itirations, self.sum_errors)
+        plt.axhline(y = 0, c = 'lightgrey')
+        plt.xlabel("Number of iterations")
+        plt.ylabel('sum of errors(absolute values)')
         
         
         
