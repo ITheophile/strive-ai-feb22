@@ -13,6 +13,8 @@ class LogReg():
     
     def __init__(self):
         self.weights = None
+        self.sum_errors = None
+        self.itirations = None
         
     def sigmoid(self, scores):
         return 1 / (1 + np.exp(-scores))
@@ -23,7 +25,9 @@ class LogReg():
             features = np.hstack((intercept, features))
         
         weights = np.zeros(features.shape[1])
-    
+        
+        self.sum_errors = []
+        self.itirations = [itr for itr in range(num_steps)]
         for step in range(num_steps):
         
             scores = features.dot(weights)
@@ -31,6 +35,9 @@ class LogReg():
             error = target - preds
             gradient = features.T.dot(error)
             weights = weights + learning_rate*gradient
+            
+            # for plotting in learning curve
+            self.sum_errors.append(error.sum() )
             
             self.weights = weights
             
@@ -46,6 +53,13 @@ class LogReg():
     def score(self, predictions, target):
          
          return ((predictions == target).sum()) / target.shape[0]
+     
+        
+    def learning_curve(self):
+        plt.figure(figsize=(12, 8))
+        plt.plot(self.itirations(), self.sum_errors)
+        
+        
          
             
         
