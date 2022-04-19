@@ -10,7 +10,8 @@ def get_data(pth):
 
     x_train, x_test, y_train, y_test = train_test_split(data.values[:,:-1], data.values[:,-1], test_size=0.2, random_state = 0)
 
-    ct = ColumnTransformer( [('ordinal', OrdinalEncoder(handle_unknown= 'use_encoded_value', unknown_value = -1), [1,4,5] )] )
+    ct = ColumnTransformer( [('ordinal', OrdinalEncoder(handle_unknown= 'use_encoded_value', unknown_value = -1), [1,4,5] )], 
+                           remainder='passthrough')
 
     x_train = ct.fit_transform(x_train)
     x_test = ct.transform(x_test)

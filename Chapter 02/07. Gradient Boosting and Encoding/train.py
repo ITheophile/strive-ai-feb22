@@ -11,7 +11,10 @@ x_train, x_test, y_train, y_test = dh.get_data("./insurance.csv")
 print(x_train.shape, y_train.shape, x_test.shape, y_test.shape)
 
 # first checks of performance of each model with default paramaters
-models = [RandomForestRegressor(), GradientBoostingRegressor(), XGBRegressor(), AdaBoostRegressor()]
+models = [RandomForestRegressor(random_state= 0), 
+          GradientBoostingRegressor(random_state= 0), 
+          XGBRegressor(random_state= 0), 
+          AdaBoostRegressor(random_state= 0)]
 
 for model in models:
     print(cross_val_score(model, x_train, y_train).mean())
