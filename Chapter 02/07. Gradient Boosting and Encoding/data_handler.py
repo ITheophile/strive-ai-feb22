@@ -3,7 +3,6 @@ from sklearn.preprocessing import OrdinalEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
 
-hello = "<3"
 
 def get_data(pth):
 
