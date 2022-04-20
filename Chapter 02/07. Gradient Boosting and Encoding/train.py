@@ -1,8 +1,9 @@
 import numpy as np
+import pandas as pd
 import data_handler as dh
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, AdaBoostRegressor
 from xgboost import XGBRegressor
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_score, GridSearchCV
 import joblib
 
 # reading data, splitting into train and test data sets
@@ -66,16 +67,32 @@ models = {'rf': RandomForestRegressor(random_state= 0),
 
 
 
-print("best model:", best_model(models, x_train, y_train))
+print("best model:", best_model(models, x_train, y_train)) # outputs ('grdB', 0.839)
 
 final_model_name = best_model(models, x_train, y_train)[0]
 final_model = models[final_model_name]
-
-
-
 
 
 final_model.fit(x_train, y_train)
 #save final model and preprocessor for later use
 joblib.dump(final_model, 'model.joblib')
 joblib.dump(ct, 'preprocessor.joblib')
+
+
+# hyparamater tuning
+params  = {
+        #    'n_estimators': np.linspace(100, 1000, 10).astype(int),
+           'max_depth': np.linspace(2, 7).astype(int), 
+           'learning_rate': np.linspace(0.001, 0.1, 10)}
+
+grid = GridSearchCV(final_model, params)
+
+grid.fit(x_train, y_train)
+
+print(f'grid best score: {grid.best_score_}') # output grid best score: 0.8468105384491948
+print(f'grid best parameters: {grid.best_params_}')#grid best score: {'learning_rate': 0.045000000000000005, 'max_depth': 3}
+
+tuned_model = GradientBoostingRegressor(random_state= 0, learning_rate= 0.045).fit(x_train, y_train)
+
+#saving tuned model
+# joblib(tuned_model,  'tuned_model.joblib')

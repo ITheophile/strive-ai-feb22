@@ -12,7 +12,7 @@ while True:
     sex = input("Are you male or female? \n")
     bmi = float(input("What is your bmi? \n"))
     children = int(input("How many children do you have? \n"))
-    region = input("""From which of the following regions are you coming from ?
+    region = input("""In which of the following regions do you live?
     (southwest, southeast, northwest, northeast) \n""")
     smoker = input("Do you smoke? \n")
 
