@@ -4,18 +4,22 @@ from xgboost import XGBRegressor
 from sklearn.model_selection import cross_val_score
 
 # Splitting train and test data sets
-x_train, x_test, y_train, y_test = dh.get_data("./insurance.csv")
+
+x_train, x_test, y_train, y_test = dh.get_data('insurance.csv')
+
 
 # Check shapes
 
 print(x_train.shape, y_train.shape, x_test.shape, y_test.shape)
 
-# first checks of performance of each model with default paramaters
-models = [RandomForestRegressor(random_state= 0), 
-          GradientBoostingRegressor(random_state= 0), 
-          XGBRegressor(random_state= 0), 
-          AdaBoostRegressor(random_state= 0)]
+# first idea of performance of each model with default paramaters
+models = {'rf': RandomForestRegressor(random_state= 0), 
+          'grdB':GradientBoostingRegressor(random_state= 0), 
+          'xgB':XGBRegressor(random_state= 0), 
+          'adaB':AdaBoostRegressor(random_state= 0)}
 
 for model in models:
-    print(cross_val_score(model, x_train, y_train).mean())
+    print(model + ' :', cross_val_score(models[model], x_train, y_train).mean())
 
+
+best_model = models['grdB'].fit(x_train, y_train)
