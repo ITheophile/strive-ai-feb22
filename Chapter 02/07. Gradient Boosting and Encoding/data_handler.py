@@ -15,7 +15,7 @@ def get_data(pth):
     data = pd.read_csv(pth)
 
     # split
-    x_train, x_test, y_train, y_test = train_test_split(data[:,:-1], data[:,-1], test_size=0.2, random_state = 0)
+    x_train, x_test, y_train, y_test = train_test_split(data.iloc[:,:-1], data.iloc[:,-1], test_size=0.2, random_state = 0)
     
     return x_train, x_test, y_train, y_test
 
