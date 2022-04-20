@@ -5,7 +5,7 @@ from train import x_test, y_test
 # Loading model and preprocessor
 ct = joblib.load('preprocessor.joblib')
 model = joblib.load('model.joblib')
-tuned_model = joblib.load('tuned_model_joblib')
+# tuned_model = joblib.load('tuned_model_joblib')
 
 
 # confirm x_test and y_test shapes

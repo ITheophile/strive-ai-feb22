@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from joblib import load
 from sklearn.preprocessing import OrdinalEncoder, StandardScaler
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.compose import ColumnTransformer
@@ -97,3 +98,47 @@ class BestForest():
         
     def get_all_forest_scores(self):
         return self.all_forest_scores
+
+
+class InsurancePredictor():
+    """
+    Class for predicting insurance charges based on provided user's data through CLI
+    """
+    def __init__(self):
+        # Loading model and preprocessor
+        preprocessor = load('column_transformer.joblib')
+        model = load('model.joblib')
+        self.processor = preprocessor
+        self.model = model
+
+    def predict(self):
+
+        """
+        Given a set of user-defined information, predict the amount of insurance charges
+        """
+        # Command line interface
+        while True:
+
+            # user's information
+            age = int(input("How old are you? \n"))
+            sex = input("Are you male or female? \n")
+            bmi = float(input("What is your bmi? \n"))
+            children = int(input("How many children do you have? \n"))
+            region = input("""In which of the following regions do you live?
+            (southwest, southeast, northwest, northeast) \n""")
+            smoker = input("Do you smoke? \n")
+
+            
+            user_data = pd.DataFrame([[age, sex, bmi, children, smoker, region]], 
+            columns= ['age', 'sex', 'bmi', 'children', 'smoker', 'region'])
+            
+            
+            #Preprocess
+            user_data_transfomed = self.processor.transform(user_data)
+
+            #predict
+            pred = self.model.predict(user_data_transfomed)[0]
+            
+            
+            # display prediction
+            print(f"your predicted insurance charges amount to {round(pred, 2)}")
