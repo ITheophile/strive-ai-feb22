@@ -1,6 +1,7 @@
 import pandas as pd
+import numpy as np
 from sklearn.preprocessing import OrdinalEncoder, StandardScaler
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.compose import ColumnTransformer
 
 
@@ -12,6 +13,8 @@ class LoaderPreprocessor():
     def __init__(self):
         # raw_data for EDA
         self.raw_data = None
+
+        # training and testing data sets
         self.splitted_data = None
         
     def loader(self, pth):
@@ -47,3 +50,50 @@ class LoaderPreprocessor():
                                     remainder='passthrough')
 
         return ct
+
+
+class BestForest():
+    """
+    Class for selecting the most accurate forest. Additionally, possibility to see the scores (cross validation means)
+    of all forest candidates.
+    """
+    def __init__(self, models):
+        """ models(dictionary): A dictionary of selected models. keys are models names and values are
+            instances of said models."""
+        self.models = models
+        self.all_forest_scores = None
+
+    def get_best(self, x_train, y_train):
+        """
+        Given a number of models (`self.models`), select the best one based on the mean of cross validation scores.
+
+        Args:
+            
+            x_train (Pandas Dataframe | Numpy array): features from traing set
+            y_train (Pandas Series | Numpy array): target from training set
+
+        Returns:
+            A tuple of best model's name and scores mean.
+        """
+        # for storing means of cross validation scores
+        scores = []
+        model_names = []
+
+        for name in self.models:
+            score = cross_val_score(self.models[name], x_train, y_train).mean()
+            scores.append( round(score, 3)) 
+            model_names.append(name)
+        
+        # locations of sorted scores from highest to lowest
+        idx = np.argsort(scores)[::-1]
+
+        sorted_models = [(model_names[i], scores[i]) for i in idx]
+
+        self.all_forest_scores = sorted_models
+        best_model_name = sorted_models[0][0]
+        
+        return self.models[best_model_name]
+
+        
+    def get_all_forest_scores(self):
+        return self.all_forest_scores
