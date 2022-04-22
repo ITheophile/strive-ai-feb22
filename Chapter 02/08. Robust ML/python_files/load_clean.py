@@ -47,6 +47,12 @@ df = train.map_title(title_dictionary).data
 df_test = test.map_title(title_dictionary).data
 
 
+# drop columns
+features = ['Name', 'Ticket', 'Cabin']
+
+train.drop_features(features)
+test.drop_features(features)
+
 
 
 
