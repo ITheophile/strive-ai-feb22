@@ -50,8 +50,8 @@ df_test = test.map_title(title_dictionary).data
 # drop columns
 features = ['Name', 'Ticket', 'Cabin']
 
-train.drop_features(features)
-test.drop_features(features)
+df = train.drop_features(features).data
+df_test = test.drop_features(features).data
 
 
 
