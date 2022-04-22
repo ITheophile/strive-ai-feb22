@@ -9,7 +9,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_predict
 from sklearn.metrics import accuracy_score, balanced_accuracy_score
 
-# load
+# load function
 def load(pth):
     """
     Load data file.
@@ -17,6 +17,25 @@ def load(pth):
     Returns (Pandas DataFrame). A DataFrame with index set to `PassengerId`
     """
     return pd.read_csv(pth, index_col='PassengerId')
+
+
+# train and validation sets splitter
+def train_val(data,  target, test_size = 0.2):
+    """
+    Split data into train and validation sets
+    Args:
+        data(Pandas DataFrame): The dataset containing features and target
+        target(str): The variable to predict
+        test_size (float, optional): size of the validation set as a percentage of the `data` length.
+
+    Returns:
+      tuple: A tuple of x_train, y_train, x_validation, y_validation
+    """
+    x = data.drop(columns = target)
+    y = data[target]
+
+    return train_test_split(x, y, test_size=test_size, random_state=0)
+
 
 
 
@@ -62,5 +81,30 @@ class CleanData():
         Removes columns and overwrite `self.data`.
         Args:
           column_names (list): List of columns' names to remove
+        Returns:
+          self
         """
         self.data.drop(columns = column_names, inplace = True)
+        return self
+
+
+
+
+class Preprocessor():
+    """
+    Class for preprocessing the data based columns' data type.
+    """
+    def __init__(self, categorical_variables:list, numerical_variables:list):
+        """
+        Args:
+          categorical_variables(list of str): Names of categorical variables
+          numerical_variables(list of str): Names of numerical variables
+        """
+        self.cat = categorical_variables
+        self.num = numerical_variables
+
+
+
+
+
+
