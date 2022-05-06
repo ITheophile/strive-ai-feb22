@@ -8,7 +8,6 @@ from sklearn.svm import SVR
 from sklearn.neural_network import MLPRegressor
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import r2_score
 
 
 # Load data
@@ -79,11 +78,6 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 
 # models
-models = {'rf': RandomForestRegressor(random_state=0),
-          'sv': SVR(),
-          'mlp': MLPRegressor(random_state=0)}
-
-
 models = {'rf': RandomForestRegressor(random_state=0),
           'sv': SVR(),
           'mlp': MLPRegressor(random_state=0)}
