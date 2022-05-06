@@ -1,11 +1,14 @@
-# Import necessary libraries
 import pandas as pd
 import numpy as np
 import time
+import matplotlib.pyplot as plt
+from sklearn import pipeline
+from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.svm import SVR
 from sklearn.neural_network import MLPRegressor
+from sklearn.linear_model import SGDRegressor
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 
@@ -34,56 +37,84 @@ def pairing(data, seq_len=6):
     return np.array(x), np.array(y)
 
 
-# pairing(data.head(50))
-
-# Extract chunks (sequence) of data and the target variable
 x, y = pairing(data)
-
-# check
 print(x.shape)
 print(y.shape)
-# print(x[0])
-# print(y[0])
-
 
 # Extract features
+
+
 def getfeatures(data):
 
     # for holding extracted features
     new_data = []
-    # get each group
+
+    # get each sequence
     for i in range(data.shape[0]):
 
-        group = []   # to hold extracted elements from each column
-        names = []
-        # get each column within each group
+        row = []  # For holding new features per sequence
         for j in range(data.shape[2]):
 
-            group.append(np.mean(data[i][:, j]))  # mean
-            group.append(np.std(data[i][:, j]))  # standard deviation
-            group.append(data[i][:, j][-1])      # last element
+            # column 0 ; p (armb)
+            if j == 0:
+                row.append(np.max(data[i, :, j]))
+                row.append(np.min(data[i, :, j]))
 
-        new_data.append(group)
+            # column 1 ; T (degC):
+            elif j == 1:
+                row.append(np.mean(data[i, :, j]))
+                row.append(np.std(data[i, :, j]))
+                row.append(data[i, :, j][-1])
+
+             # column 2 ; Tpot (K)
+            elif j == 2:
+                row.append(np.mean(data[i, :, j]))
+                row.append(np.std(data[i, :, j]))
+
+             # column 3; Tdew (degC)
+            elif j == 3:
+                row.append(np.mean(data[i, :, j]))
+                row.append(np.std(data[i, :, j]))
+
+             # column 4 ; rh (%)
+            elif j == 4:
+                row.append(np.max(data[i, :, j]) - np.min(data[i, :, j]))
+
+            # column 5 ; VPmax (mbar)
+            elif j == 5:
+                row.append(np.max(data[i, :, j]) - np.min(data[i, :, j]))
+
+
+            # column 6
+            elif j == 6:
+                row.append(np.median(data[i, :, j]))
+                row.append(np.min(data[i, :, j]))
+
+            # any column
+            else:
+                row.append(np.mean(data[i, :, j]))
+
+        new_data.append(row)
 
     return np.array(new_data)
 
 
-x = getfeatures(x)
-print(x.shape)
+new_data = getfeatures(x)
 
 
 # Train Test sets
 X_train, X_test, y_train, y_test = train_test_split(
-    x, y, test_size=0.3, random_state=0)
+    new_data, y, test_size=0.3, shuffle=False, random_state=0)
+print(X_train.shape, y_train.shape, X_test.shape, y_test.shape)
 
 
 # models
 models = {'rf': RandomForestRegressor(random_state=0),
-          'sv': SVR(),
-          'mlp': MLPRegressor(random_state=0)}
+          'mlp': MLPRegressor(random_state=0),
+          'sgd': SGDRegressor(random_state=0)}
 
 
-# Pipelines
+# Pipeline
 models = {name: Pipeline([("scaler", StandardScaler()), ("regressor", model)])
           for name, model in models.items()}
 
@@ -91,7 +122,6 @@ models = {name: Pipeline([("scaler", StandardScaler()), ("regressor", model)])
 # Performance
 def model_perfomance(models, x, y):
     results = pd.DataFrame()
-
     for name, pipe in models.items():
 
         # training time
@@ -102,7 +132,6 @@ def model_perfomance(models, x, y):
         # cross validation scores
         scores = cross_val_score(pipe, x, y, cv=4)
 
-        # results into Dataframe
         metrics = pd.DataFrame({'name': [name], 'mean_score': [
                                scores.mean()], 'std_score': [scores.std()], 'training_time': [t1]})
         results = pd.concat([results, metrics])
@@ -110,4 +139,16 @@ def model_perfomance(models, x, y):
     return results
 
 
-print(model_perfomance(models, X_train, y_train))
+results = model_perfomance(models, X_train, y_train)
+print(results.sort_values('mean_score', ascending=False))
+
+
+# Final model
+model = Pipeline([('scaler', StandardScaler()),
+                 ('sgd', SGDRegressor(random_state=0))])
+
+model.fit(X_train, y_train)
+
+preds = model.predict(X_test)
+
+print('test_score: ', r2_score(y_test, preds))
