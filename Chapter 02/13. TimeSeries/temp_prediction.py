@@ -1,6 +1,14 @@
 # Import necessary libraries
 import pandas as pd
 import numpy as np
+import time
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.svm import SVR
+from sklearn.neural_network import MLPRegressor
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import r2_score
 
 
 # Load data
@@ -61,5 +69,51 @@ def getfeatures(data):
     return np.array(new_data)
 
 
-new_x = getfeatures(x)
-print(new_x.shape)
+x = getfeatures(x)
+print(x.shape)
+
+
+# Train Test sets
+X_train, X_test, y_train, y_test = train_test_split(
+    x, y, test_size=0.3, random_state=0)
+
+
+# models
+models = {'rf': RandomForestRegressor(random_state=0),
+          'sv': SVR(),
+          'mlp': MLPRegressor(random_state=0)}
+
+
+models = {'rf': RandomForestRegressor(random_state=0),
+          'sv': SVR(),
+          'mlp': MLPRegressor(random_state=0)}
+
+
+# Pipelines
+models = {name: Pipeline([("scaler", StandardScaler()), ("regressor", model)])
+          for name, model in models.items()}
+
+
+# Performance
+def model_perfomance(models, x, y):
+    results = pd.DataFrame()
+
+    for name, pipe in models.items():
+
+        # training time
+        t0 = time.time()
+        pipe.fit(x, y)
+        t1 = time.time() - t0
+
+        # cross validation scores
+        scores = cross_val_score(pipe, x, y, cv=4)
+
+        # results into Dataframe
+        metrics = pd.DataFrame({'name': [name], 'mean_score': [
+                               scores.mean()], 'std_score': [scores.std()], 'training_time': [t1]})
+        results = pd.concat([results, metrics])
+
+    return results
+
+
+print(model_perfomance(models, X_train, y_train))
