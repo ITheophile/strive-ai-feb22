@@ -35,12 +35,12 @@ optimizer = optim.Adam(neural_network.parameters(), lr=learning_rate)
 train_losses = []
 test_losses = []
 r_squared_scores = []
-benchmark_score = 0.92
+benchmark_score = 0.93
 for epoch in range(epochs):
     # print(f"Epoch: {epoch+1}/{epochs}")
     running_loss = 0
     # training
-    for batch_idx, (x_train_batch, y_train_batch) in enumerate(zip(x_train, y_train)):
+    for x_train_batch, y_train_batch in zip(x_train, y_train):
 
         optimizer.zero_grad()
         # predictions
@@ -65,7 +65,7 @@ for epoch in range(epochs):
     running_rsquared = 0
     running_loss = 0
     with torch.no_grad():
-        for batch_idx, (x_test_batch, y_test_batch) in enumerate(zip(x_test, y_test)):
+        for x_test_batch, y_test_batch in zip(x_test, y_test):
             # predictions
             test_preds = neural_network(x_test_batch)
 
@@ -83,7 +83,7 @@ for epoch in range(epochs):
         test_losses.append(running_loss/x_test.shape[0])
 
         # saving best model
-        if r_squared_scores[-1] > benchmark_score:
+        if r_squared_scores[-1] >= benchmark_score:
             torch.save(neural_network, 'model.pth')
 
     neural_network.train()
