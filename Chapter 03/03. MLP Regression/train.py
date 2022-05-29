@@ -61,11 +61,10 @@ for epoch in range(epochs):
     train_losses.append(running_loss/x_train.shape[0])
 
     # validation
-
-    neural_network.eval()
-    running_rsquared = 0
-    running_loss = 0
     with torch.no_grad():
+        running_rsquared = 0
+        running_loss = 0
+        neural_network.eval()
         for x_test_batch, y_test_batch in zip(x_test, y_test):
             # predictions
             test_preds = neural_network(x_test_batch)
@@ -88,7 +87,7 @@ for epoch in range(epochs):
         if r_squared_scores[-1] >= benchmark_score:
             torch.save(neural_network, 'model.pth')
 
-    neural_network.train()
+
 # Plots
 x_epochs = list(range(epochs))
 plt.figure(figsize=(15, 6))

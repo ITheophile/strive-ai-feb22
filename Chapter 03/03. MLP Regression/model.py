@@ -6,16 +6,13 @@ from torch import nn
 
 def nn_regression(n_features, hidden_sizes):
     neuralnet = nn.Sequential(
-                                nn.Linear(n_features,hidden_sizes[0]), # 1st hidden layer
-                                nn.ReLU(), 
-                                nn.Linear(hidden_sizes[0], hidden_sizes[1]), # 2nd hidden layer
-                                nn.ReLU(), 
-                                nn.Linear(hidden_sizes[1], hidden_sizes[2]), # 3rd hidden layer
-                                nn.ReLU(),
-                                nn.Linear(hidden_sizes[2], 1), # output layer
-                                                    
-                                )
+        nn.Linear(n_features, hidden_sizes[0]),  # 1st hidden layer
+        nn.ReLU(),
+        nn.Linear(hidden_sizes[0], hidden_sizes[1]),  # 2nd hidden layer
+        nn.ReLU(),
+        nn.Linear(hidden_sizes[1], hidden_sizes[2]),  # 3rd hidden layer
+        nn.ReLU(),
+        nn.Linear(hidden_sizes[2], 1),  # output layer
+
+    )
     return neuralnet
-
-
-        
