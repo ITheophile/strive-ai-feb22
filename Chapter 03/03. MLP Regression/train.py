@@ -35,9 +35,9 @@ optimizer = optim.Adam(neural_network.parameters(), lr=learning_rate)
 train_losses = []
 test_losses = []
 r_squared_scores = []
-benchmark_score = 0.93
+benchmark_score = 0.90
 for epoch in range(epochs):
-    # print(f"Epoch: {epoch+1}/{epochs}")
+
     running_loss = 0
     # training
     for x_train_batch, y_train_batch in zip(x_train, y_train):
@@ -84,8 +84,12 @@ for epoch in range(epochs):
 
         # saving best model
         # is current mean score (mean per epoch) greater than or equal to the benchmark?
-        if r_squared_scores[-1] >= benchmark_score:
+        if r_squared_scores[-1] > benchmark_score:
+            # save model
             torch.save(neural_network, 'model.pth')
+
+            # update benckmark
+            benchmark_score = r_squared_scores[-1]
 
 
 # Plots
@@ -104,7 +108,7 @@ plt.plot(x_epochs, r_squared_scores, marker='o',
 plt.xlabel('Epoch')
 plt.ylabel('R squared')
 plt.axhline(benchmark_score, c='grey', ls='--',
-            label=f'benchmark_score({benchmark_score})')
+            label=f'benchmark_score({benchmark_score :.2f})')
 plt.legend()
 
 plt.savefig('losses_rsquared.jpg')
