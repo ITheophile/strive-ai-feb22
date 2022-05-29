@@ -57,7 +57,8 @@ for epoch in range(epochs):
 
         # print(f'Loss: {train_loss.item() :.4f}')
 
-    train_losses.append(running_loss/x_train.shape[0])  # loss per epoch
+    # mean loss (all batches losses divided by the total number of batches)
+    train_losses.append(running_loss/x_train.shape[0])
 
     # validation
 
@@ -83,6 +84,7 @@ for epoch in range(epochs):
         test_losses.append(running_loss/x_test.shape[0])
 
         # saving best model
+        # is current mean score (mean per epoch) greater than or equal to the benchmark?
         if r_squared_scores[-1] >= benchmark_score:
             torch.save(neural_network, 'model.pth')
 
