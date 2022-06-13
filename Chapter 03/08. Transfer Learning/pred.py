@@ -40,7 +40,6 @@ pred, confidence = get_prediction(img, model, classes)
 
 
 # Plotting
-
 plt.figure(figsize=(8, 6))
 plt.imshow(np_image)
 plt.title(f'Prediction: {pred} | Confidence:{confidence * 100 : .2f}% ')
