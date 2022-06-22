@@ -27,7 +27,6 @@ def clean_sentences(sentences):
 
 def get_dicts(sentences):
     vocab = set()
-    word_to_idx = {}
     for sent in sentences:
         for word in sent:
             vocab.add(word)

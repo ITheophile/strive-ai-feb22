@@ -1,9 +1,9 @@
 import torch
 from torch.autograd import Variable
 from torch.nn import NLLLoss
-from torch.nn.functional import log_softmax
+import torch.nn.functional as F
 import numpy as np
-
+import matplotlib.pyplot as plt
 from utils import *
 
 
@@ -15,8 +15,13 @@ cleaned = clean_sentences(preprocessed)
 
 word_idx, vocab_size = get_dicts(cleaned)
 
+pairs = get_pairs(cleaned, word_idx, 2)
 
-pairs = get_pairs(cleaned, word_idx, 4)
+
+def get_embedding(embeddings, word_to_idx, word):
+    word = word.lower()
+    idx = word_to_idx[word]
+    return embeddings[:, idx]
 
 
 def input_layer(word_idx, vocab_size):
@@ -25,35 +30,59 @@ def input_layer(word_idx, vocab_size):
     return x
 
 
-def train(dataset, word_idx, n_epochs, lr, embedding_size, vocab_size):
-
-    W1 = Variable(torch.random(
+def train(dataset, n_epochs, print_every, lr, embedding_size, vocab_size):
+    criterion = NLLLoss()
+    W1 = Variable(torch.randn(
         vocab_size, embedding_size).float(), requires_grad=True)
-    W2 = Variable(torch.random(embedding_size,
+    W2 = Variable(torch.randn(embedding_size,
                   vocab_size).float(), requires_grad=True)
 
-    for epoch in n_epochs:
+    # x = Variable(input_layer(dataset[0][0], vocab_size)).float()
+    # print(x.shape)
+    # y_true = Variable(torch.tensor([dataset[0][1]])).long()
+    # print(y_true.type())
+
+    losses = []
+    for epoch in range(n_epochs):
 
         loss_val = 0
+        running_loss = 0
 
         for data, target in dataset:
 
-            x = Variable(input_layer(data[0]), vocab_size).float()
-            y_true = Variable(torch.from_numpy(np.array([target]))).long()
+            x = Variable(input_layer(data, vocab_size)).float()
+            y_true = Variable(torch.tensor([target])).long()
 
-            z1 = np.matmul(x, W1)
-            z2 = np.matmul(z1, W2)
+            z1 = torch.matmul(x, W1)
+            z2 = torch.matmul(z1, W2)
 
-            log_softmax = log_softmax(z2, dim=0)
-            loss = NLLLoss(log_softmax(1, -1), y_true)
+            log_softmax = F.log_softmax(z2, dim=0)
 
-            loss_val += loss
+            loss = criterion(log_softmax.view(1, -1),  y_true)
+            loss.backward()
 
-            W1.data -= lr * W1.gradient_data
-            W2.data -= lr * W2.gradient_data
+            W1.data -= lr * W1.grad
+            W2.data -= lr * W2.grad
 
-            W1.gradient_data = 0
-            W2.gradient_data = 0
+            W1.grad.zero_()
+            W2.grad.zero_()
 
-            if epoch % 10 == 0:
-                print(f'Loss at epoch {epoch}: {loss_val/len(dataset)}')
+            loss_val += loss.item()
+            running_loss += loss.item()
+
+        if epoch % print_every == 0 and len(losses) != 0:
+            print(f'Loss at epoch {epoch}: {losses[-1]}')
+
+        losses.append(loss_val/len(dataset))
+
+    return W2.detach(), losses
+
+
+embeddings, losses = train(pairs, 40, 5,  0.01, 10, vocab_size)
+
+plt.plot(losses)
+plt.show()
+
+
+print(embeddings.shape)
+print(get_embedding(embeddings, word_idx, 'Saudi'))
