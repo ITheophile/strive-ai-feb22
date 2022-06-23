@@ -15,7 +15,7 @@ def load_data(pth):
     """
     Load the dataset and return a dataframe with columns ([star, review])
     """
-    df = pd.read_csv(pth, nrows=3000, header=None,
+    df = pd.read_csv(pth,  header=None,
                      skiprows=1, usecols=[1, 2, 3])
     df.rename({1: "star", 2: "rating1", 3: "rating2"}, axis=1, inplace=True)
     df["review"] = df["rating1"] + " " + df["rating2"]
@@ -31,7 +31,7 @@ def train_test_split(df, train_size=0.7):
     len_train = int(len(df) * train_size)
     train_idx, test_idx = df_idx[:len_train], df_idx[len_train:]
 
-    return df.iloc[train_idx], df.iloc[test_idx]
+    return df.iloc[train_idx].reset_index(drop=True), df.iloc[test_idx].reset_index(drop=True)
 
 
 def preprocessing(sentence):
@@ -95,7 +95,7 @@ class DataClass(Dataset):
 
 
 # IMPLIMENTING ABOVE FUNCTIONS
-BATCH_SIZE = 32
+BATCH_SIZE = 16
 df = load_data("data/Amazon/3000test.csv")
 
 train_df, test_df = train_test_split(df)
