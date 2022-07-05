@@ -1,0 +1,39 @@
+body {
+    background-color: #686868;
+    ;
+    color: white;
+    font-size: large;
+}
+
+.cover_image {
+    width: 100%;
+    height: 350px;
+}
+
+strong {
+    color: rgb(90, 195, 240)
+}
+
+
+.img_social {
+    padding: 0em 0.3em;
+}
+
+button {
+    background-color: rgb(90, 195, 240);
+
+}
+
+button:hover {
+    background-color: rgb(3, 41, 57);
+    color: white
+}
+
+
+a {
+    color: rgb(251, 164, 3);
+}
+
+h2 {
+    color: rgb(251, 164, 3);
+}
