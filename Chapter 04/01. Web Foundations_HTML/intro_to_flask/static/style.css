@@ -1,0 +1,16 @@
+:root{
+    --background-color:#001524ff;
+    --primary-color:#9649cbff;
+    --secondary-color:#4ecdc4ff;
+}
+
+
+body{
+    background-color: var(--background-color);
+    color:white
+}
+
+.card-title, .card-text{
+    color: black;
+}
+
