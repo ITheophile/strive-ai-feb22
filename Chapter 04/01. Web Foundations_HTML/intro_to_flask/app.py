@@ -14,7 +14,7 @@ def about():
     return render_template('about.html')
 
 
-@app.route("/portolio")
+@app.route("/portfolio")
 def portolio():
     return render_template('portfolio.html')
 
