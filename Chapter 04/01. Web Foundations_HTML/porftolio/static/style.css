@@ -1,0 +1,74 @@
+:root{
+    --background-color:#001524ff;
+    --primary-color:#9649cbff;
+    --secondary-color:#4ecdc4ff;
+}
+
+
+body{
+    background-color: var(--background-color);
+    color:white
+}
+
+
+.card-title, .card-text{
+    color: black;
+}
+
+.about_text {
+    color: whitesmoke;
+    letter-spacing: 1px;
+    line-height: 28px;
+    font-size: 18px;
+    padding-left: 25px;
+}
+.about_text a {
+    color: aqua;
+}
+
+span {
+    color: orange;
+    font-weight: bold;
+}
+
+
+.card {
+    height: 100%;
+}
+
+/* .card-body{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+} */
+
+.about p{
+    color: whitesmoke;
+    letter-spacing: 1px;
+    
+    font-size: 18px;
+}
+
+.about h5{
+    color: whitesmoke;
+
+}
+
+.card img{
+    height: 40%;
+}
+
+
+.contact p{
+    color: whitesmoke;
+    letter-spacing: 1px;
+    
+    font-size: 18px;
+}
+
+.contact h5{
+    color: whitesmoke;
+
+}
+

@@ -1,0 +1,45 @@
+{% macro card() %}
+
+    <div class="row gy-3">
+        <div class="col-md-4 col-sm-6">
+            <div class="card border-warning mb-5">
+                <img src="{{url_for('static', filename = 'gesture_control2.jfif')}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Gesture-based vlc control</h5>
+                    <p class="card-text">This computer vision project is about controlling vlc functionalities through hand gesture.
+                        The github repository can be found through the link bellow.
+                    </p>
+                    <a href="https://github.com/ITheophile/gesture_based_vlc_control" 
+                    target="_blank" class="btn btn-primary">See repo</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="card border-warning mb-5">
+                <img src="{{url_for('static', filename = 'heart_attack.jfif')}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Heart Attack</h5>
+                    <p class="card-text">This project is about detecting whether or not someone is about
+                        to get a heart attack. The github repo can be accessed
+                        through the button bellow.</p>
+                    <a href="https://github.com/ITheophile/Heart_attack" 
+                    class="btn btn-primary" target="_blank">See repo</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6" >
+            <div class="card border-warning mb-5">
+                <img src="{{url_for('static', filename = 'scenes.jfif')}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Scene Classifier</h5>
+                    <p class="card-text">This project is about classifying an image into one of the following categories:
+                        Buildings, Forest, Glacier, Mountain, Sea and Street. The github repo can be accessed
+                        through the button bellow.</p>
+                    <a href="https://github.com/ITheophile/intel_image_classification" 
+                    class="btn btn-primary" target="_blank">See repo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endmacro %}
