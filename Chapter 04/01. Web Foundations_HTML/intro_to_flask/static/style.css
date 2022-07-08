@@ -14,3 +14,29 @@ body{
     color: black;
 }
 
+.about_text {
+    color: whitesmoke;
+    letter-spacing: 1px;
+    line-height: 28px;
+    font-size: 18px;
+    padding-left: 25px;
+}
+.about_text a {
+    color: aqua;
+}
+
+span {
+    color: orange;
+    font-weight: bold;
+}
+
+.card{
+    height: 100%;
+}
+
+.card-body{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
