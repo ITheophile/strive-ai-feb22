@@ -1,0 +1,58 @@
+-- -- Question1
+-- SELECT
+--     f.title film_title,
+--     f.description film_description,
+--     f.release_year film_release_year,
+--     cat.name category_name
+    
+--   FROM film as f
+  
+--   INNER JOIN film_category USING(film_id)
+  
+--   INNER JOIN category AS cat USING(category_id);
+
+
+-- -- question 2
+-- SELECT
+--     c.first_name,
+--     c.last_name,
+--     city.city,
+--     country.country
+--   FROM customer as c
+--   INNER JOIN address USING(address_id)
+--   INNER JOIN city USING(city_id)
+--   INNER JOIN country USING(country_id);
+  
+
+-- -- question 3
+-- SELECT
+--     c.first_name customer_first_name,
+--     c.last_name customer_last_name,
+--     c.email customer_email,
+--     p.amount payment_amount,
+--     s.first_name staff_first_name,
+--     s.last_name staff_last_name,
+--     r.rental_date
+    
+    
+--   FROM payment AS p
+  
+--   INNER JOIN customer AS c USING(customer_id)
+--   INNER JOIN staff AS s USING(staff_id)
+--   INNER JOIN rental r USING(rental_id);
+
+
+-- question5
+SELECT
+    store.store_id,
+    address,
+    staff.first_name,
+    staff.last_name
+      
+  FROM store
+  INNER JOIN address USING(address_id)
+  INNER JOIN staff
+    ON staff.staff_id = store.manager_staff_id;
+    
+
+  
