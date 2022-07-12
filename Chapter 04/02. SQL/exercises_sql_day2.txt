@@ -42,17 +42,29 @@
 --   INNER JOIN rental r USING(rental_id);
 
 
--- question5
-SELECT
-    store.store_id,
-    address,
-    staff.first_name,
-    staff.last_name
+-- -- question5
+-- SELECT
+--     store.store_id,
+--     address,
+--     staff.first_name manager_first_name,
+--     staff.last_name manager_last_name
       
-  FROM store
-  INNER JOIN address USING(address_id)
-  INNER JOIN staff
-    ON staff.staff_id = store.manager_staff_id;
-    
+--   FROM store
+--   INNER JOIN address USING(address_id)
+--   INNER JOIN staff
+--     ON staff.staff_id = store.manager_staff_id;
 
-  
+
+-- -- question 6
+-- SELECT 
+--         (COUNT(*) - 5000)*0.1 as total_bonus,
+--         staff.first_name,
+--         staff.last_name
+--       FROM rental
+--       INNER JOIN staff USING(staff_id)
+--       GROUP BY staff_id;
+
+
+-- question 4
+
+    
