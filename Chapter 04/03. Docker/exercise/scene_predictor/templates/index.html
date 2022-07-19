@@ -21,11 +21,19 @@
 <body>
     <!-- TODO: add a contraint to only accept images file (jpg, png, etc...) -->
     <form method=post enctype=multipart/form-data>
-        <div class="container">
+        <div class="container mb-5">
             <label for="formFileLg" class="form-label"><span class="h5">Upload Image</span> </label>
             <input class="form-control form-control-lg mb-3" id="formFileLg" type="file" name = "file">
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
-    </form>    
+    </form>
+    
+    {% if prediction %}
+    <div class="container text-center">
+        <p>Image predicted as <span class="fw-bold">{{prediction}}</span></p>
+    </div>
+
+    {% endif %}
+    
 </body>
 </html>

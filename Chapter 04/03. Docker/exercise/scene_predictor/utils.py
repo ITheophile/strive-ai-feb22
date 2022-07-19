@@ -17,7 +17,7 @@ def store_uploaded_image():
             file.save(file_path)
             return file_path
         else:
-            return 'No file found...Did you uploaded an image?'
+            return None
 
 
 

@@ -16,9 +16,8 @@ app = Flask(__name__)
 @app.route('/', methods = ['GET','POST'])
 def index():
     
-    # Store the image
+    # Store the image and return its path
     img_pth = store_uploaded_image()
-    
 
     # test output
     if img_pth:
@@ -37,11 +36,17 @@ def index():
         
     
         pred = make_prediction(model, img, classes)
+
+        return render_template('index.html', prediction = pred.upper())
+
+    else:
+        return render_template('index.html')
         
-        return render_template('test.html', test = pred)
-    return render_template('index.html')
+
     
-# clean_upload_folder()
+    
+clean_upload_folder()
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', debug=True)
