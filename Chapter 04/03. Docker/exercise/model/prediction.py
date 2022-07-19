@@ -1,7 +1,7 @@
-from PIL import Image
+
 import torch
 from torchvision import transforms
-from model_setup import model
+
 
 
 # prediction function
@@ -28,9 +28,9 @@ def make_prediction(model, image, classes):
 
 
 # Load model
-model.load_state_dict(torch.load('model_state.pth'))
+# model.load_state_dict(torch.load('model_state.pth'))
 
-# # Load classes for predictions
+# Load classes for predictions
 # classes = torch.load('classes.pth')
 
 # # Load image
