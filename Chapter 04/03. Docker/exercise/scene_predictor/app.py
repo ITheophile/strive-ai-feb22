@@ -1,5 +1,4 @@
 from utils import store_uploaded_image, clean_upload_folder
-from model.model_setup import model
 from model.prediction import make_prediction
 
 import os
@@ -31,13 +30,13 @@ def index():
         # Load prediction classes
         classes = load(os.path.join('model','classes.pth'))
 
-        # Load model with trained weights
+        # Load model
+        model = load( os.path.join('model','model.pth') )
         model.load_state_dict( 
             load( os.path.join('model','model_state.pth') ) 
         )
 
-        
-    
+        # Prediction
         pred = make_prediction(model, img, classes)
 
 
@@ -52,11 +51,6 @@ def index():
     else:
         return render_template('index.html')
         
-
-    
-    
-# clean_upload_folder()
-
 
 
 if __name__ == '__main__':
